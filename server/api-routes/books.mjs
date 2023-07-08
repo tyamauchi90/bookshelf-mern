@@ -1,43 +1,42 @@
 import express from "express";
-import Book from "../models/books.mjs";
+import { body } from "express-validator";
+import { getAllBooks, getBookById, deleteBook, registBook, updateBook } from "../controllers/books.mjs";
+import { requestErrorHandler } from "../helpers/helper.mjs";
 
 const router = express.Router();
 
 // api/books
-router.get('/', async function (req, res) {
-  const books = await Book.find().sort({ updatedAt: -1 });
-  res.json(books);
-})
+router.get(
+  '/',
+  requestErrorHandler(getAllBooks)
+);
 
-router.get('/:id', async function (req, res) {
-  const _id = req.params.id;
-  // const books = await Book.findOne({ _id: _id });
-  const book = await Book.findById(_id);
-  res.json(book);
-})
+router.get(
+  '/:id',
+  requestErrorHandler(getBookById)
+);
 
-router.delete('/:id', async function (req, res) {
-  const _id = req.params.id;
-  await Book.deleteOne({ _id });
-  res.json({ "msg": "Delete succeeded." });
-})
+router.delete(
+  '/:id',
+  requestErrorHandler(deleteBook)
+);
 
-router.post('/', async function (req, res) {
-  const book = new Book(req.body);
-  const newBook = await book.save();
-  res.json(newBook);
-})
+router.post(
+  '/',
+  body('title').notEmpty(),
+  body('description').notEmpty(),
+  body('comment').notEmpty(),
+  body('rating').notEmpty().isInt({ min: 1, max: 5 }),
+  requestErrorHandler(registBook)
+);
 
-router.patch('/:id', async function (req, res) {
-  const { title, discription, comment, rating } = req.body;
-  const _id = req.params.id;
-  const book = await Book.findById(_id);
-  if (title !== undefined) book.title = title;
-  if (discription !== undefined) book.discription = discription;
-  if (comment !== undefined) book.comment = comment;
-  if (rating !== undefined) book.rating = rating;
-  await book.save();
-  res.json(book);
-})
+router.patch(
+  '/:id',
+  body('title').optional().notEmpty(),
+  body('description').optional().notEmpty(),
+  body('comment').optional().notEmpty(),
+  body('rating').optional().notEmpty().isInt({ min: 1, max: 5 }),
+  requestErrorHandler(updateBook)
+);
 
 export default router;
