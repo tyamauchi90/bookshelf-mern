@@ -1,1 +1,29 @@
 http://localhost:8080/api/books
+
+###
+http://localhost:8080/api/books/6334634881d8ae4ba04fbc8e
+
+###
+DELETE  http://localhost:8080/api/books/6334634881d8ae4ba04fbc8e
+
+###
+POST http://localhost:8080/api/books
+Content-Type: application/json
+
+{
+  "title" : "テストデータ",
+  "description" : "説明欄の内容です",
+  "comment" : "コメントの内容です",
+  "rating": 2
+}
+
+###
+PATCH  http://localhost:8080/api/books/64a914d91fee553180d8639c
+Content-Type: application/json
+
+{
+  "title" : "テストデータ1",
+  "description" : "説明欄の内容です2",
+  "comment" : "コメントの内容です3",
+  "rating": 4
+}
