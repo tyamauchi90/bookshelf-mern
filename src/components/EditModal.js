@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form';
 
 import { useDispatchBooks } from '../contexts/BookContext';
 import bookApi from '../api/book';
-import Button from '../components/Button';
-import { InputBookTitle, InputBookDesc, InputBookComment, InputBookRating } from '../components/forms';
+import Button from './Button';
+import { InputBookTitle, InputBookDesc, InputBookComment, InputBookRating } from './forms';
 
 const EditModal = ({ book, setBook, toggleEditModal }) => {
   const dispatch = useDispatchBooks();
